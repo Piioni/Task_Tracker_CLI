@@ -38,4 +38,21 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return ID +
+                " description='" + description + '\'' +
+                ", status=" + status +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
 }

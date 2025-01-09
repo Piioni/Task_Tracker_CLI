@@ -99,6 +99,14 @@ public class task_cli {
                 break;
             case "list":
                 System.out.println("List command");
+                if (args.length == 1) {
+                    taskManager.listTasks();
+                } else if (args.length == 2) {
+                    taskManager.listTasks(TaskStatus.valueOf(args[1].toUpperCase()));
+                } else {
+                    System.out.println("Invalid command");
+                    showUsage();
+                }
 
                 break;
             case "help":
