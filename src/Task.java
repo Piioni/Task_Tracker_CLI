@@ -19,7 +19,7 @@ public class Task {
     public Task(String description, TaskStatus status) {
         this.ID = IDCounter++;
         this.description = description;
-        this.status = status;
+        this.status = status    ;
         this.creationDate = LocalDate.now();
         this.updateDate = LocalDate.now();
     }
