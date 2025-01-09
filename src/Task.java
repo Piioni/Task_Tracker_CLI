@@ -6,14 +6,18 @@ public class Task {
     private TaskStatus status;
     private LocalDate creationDate;
     private LocalDate updateDate;
+    private static int IDCounter = 1;
 
-    public Task(int ID, String description, TaskStatus status) {
-        this.ID = ID;
+    public Task(String description) {
+        this.ID = IDCounter++;
         this.description = description;
-        this.status = status;
+        this.status = TaskStatus.TODO;
         this.creationDate = LocalDate.now();
         this.updateDate = LocalDate.now();
     }
 
 
+    public int getID() {
+        return ID;
+    }
 }
