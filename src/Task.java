@@ -16,8 +16,26 @@ public class Task {
         this.updateDate = LocalDate.now();
     }
 
+    public Task(String description, TaskStatus status) {
+        this.ID = IDCounter++;
+        this.description = description;
+        this.status = status;
+        this.creationDate = LocalDate.now();
+        this.updateDate = LocalDate.now();
+    }
 
     public int getID() {
         return ID;
+    }
+
+    public void setDescription(String description) {
+    }
+
+    public void setUpdateDate() {
+        this.updateDate = LocalDate.now();
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 }
