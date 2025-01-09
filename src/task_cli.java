@@ -1,5 +1,9 @@
 public class task_cli {
+
     public static void main(String[] args) {
+
+        TaskManager taskManager = new TaskManager();
+
         System.out.println("Hello, World!");
 
         if (args.length == 0) {
@@ -11,6 +15,15 @@ public class task_cli {
         switch (command) {
             case "add":
                 try{
+                    if (args.length == 3) {
+                        System.out.println("Add command");
+                        taskManager.addTask(args[1], TaskStatus.valueOf(args[2].toUpperCase()));
+                        return;
+                    }else if (args.length == 2){
+                        System.out.println("Add command");
+                        taskManager.addTask(args[1]);
+                        return;
+                    }
                     if (args.length < 2) {
                         System.out.println("Description is required");
                         showUsage();
@@ -29,18 +42,72 @@ public class task_cli {
                     System.out.println("An error occurred");
                     showUsage();
                 }
-                Task task = new Task("description");
-                System.out.println("Task added successfully, ID: " + task.getID());
+                System.out.println("Task added successfully, description: " + args[1]);
                 break;
 
             case "update":
-                System.out.println("Update command");
+                try {
+                    if (args.length == 4) {
+                        System.out.println("Update command");
+                        if (TaskStatus.contains(args[3].toUpperCase())) {
+                            taskManager.updateTask(Integer.parseInt(args[1]), args[2], TaskStatus.valueOf(args[3].toUpperCase()));
+                            return;
+                        }else {
+                            System.out.println("Invalid status");
+                            showUsage();
+                            return;
+                        }
+                    } else if (args.length == 3) {
+                        if (TaskStatus.contains(args[2].toUpperCase())) {
+                            System.out.println("Update command");
+                            taskManager.updateTask(Integer.parseInt(args[1]), TaskStatus.valueOf(args[2].toUpperCase()));
+                            return;
+                        }else {
+                            System.out.println("Update command");
+                            taskManager.updateTask(Integer.parseInt(args[1]), args[2]);
+                            return;
+                        }
+                    }
+                    if (args.length < 3) {
+                        System.out.println("ID and description or status are required");
+                        showUsage();
+                        return;
+                    }
+                    StringBuilder db = new StringBuilder();
+                    for (int i = 2; i < args.length; i++) {
+                        db.append(args[i]);
+                        db.append(" ");
+                    }
+                    String description = db.toString().trim();
+                } catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("ID and description are required");
+                    showUsage();
+                } catch (Exception e){
+                    System.out.println("An error occurred");
+                    showUsage();
+                }
                 break;
             case "delete":
-                System.out.println("Delete command");
+                if (args.length < 2) {
+                    System.out.println("ID is required");
+                    showUsage();
+                    return;
+                } else {
+                    System.out.println("Delete command");
+                    taskManager.deleteTask(Integer.parseInt(args[1]));
+                }
                 break;
             case "list":
                 System.out.println("List command");
+                if (args.length == 1) {
+                    taskManager.listTasks();
+                } else if (args.length == 2) {
+                    taskManager.listTasks(TaskStatus.valueOf(args[1].toUpperCase()));
+                } else {
+                    System.out.println("Invalid command");
+                    showUsage();
+                }
+
                 break;
             case "help":
                 showUsage();

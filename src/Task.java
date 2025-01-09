@@ -19,7 +19,7 @@ public class Task {
     public Task(String description, TaskStatus status) {
         this.ID = IDCounter++;
         this.description = description;
-        this.status = status;
+        this.status = status    ;
         this.creationDate = LocalDate.now();
         this.updateDate = LocalDate.now();
     }
@@ -37,5 +37,22 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return ID +
+                " description='" + description + '\'' +
+                ", status=" + status +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
     }
 }

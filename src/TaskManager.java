@@ -80,4 +80,20 @@ public class TaskManager {
         return null;
     }
 
+    public void listTasks() {
+        for (Task task : tasks) {
+            System.out.println(task.getDescription());
+        }
+    }
+
+    public void listTasks(TaskStatus status) {
+        for (Task task : tasks) {
+            if (task.getStatus() == status) {
+                System.out.println(task.getDescription());
+                System.out.println(task.getDescription());
+            }
+        }
+    }
+
+
 }
