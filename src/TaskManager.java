@@ -15,11 +15,13 @@ public class TaskManager {
     public void addTask(String description) {
         Task task = new Task(description);
         tasks.add(task);
+        System.out.println("Task added successfully");
     }
 
     public void addTask(String description, TaskStatus status) {
         Task task = new Task(description, status);
         tasks.add(task);
+        System.out.println("Task added successfully");
     }
 
     public void updateTask(int id, String description) {
@@ -28,7 +30,7 @@ public class TaskManager {
             task.setDescription(description);
             task.setUpdateDate();
             tasks.set(tasks.indexOf(task), task);
-
+            System.out.println("Task updated successfully");
         }else{
             System.out.println("Task not found");
         }
@@ -40,6 +42,7 @@ public class TaskManager {
             task.setStatus(status);
             task.setUpdateDate();
             tasks.set(tasks.indexOf(task), task);
+            System.out.println("Task updated successfully");
         }else{
             System.out.println("Task not found");
         }
@@ -52,6 +55,7 @@ public class TaskManager {
             task.setStatus(status);
             task.setUpdateDate();
             tasks.set(tasks.indexOf(task), task);
+            System.out.println("Task updated successfully");
         }else{
             System.out.println("Task not found");
         }
@@ -61,6 +65,7 @@ public class TaskManager {
         Task task = findTaskById(id);
         if (task != null) {
             tasks.remove(task);
+            System.out.println("Task deleted successfully");
         }else{
             System.out.println("Task not found");
         }
