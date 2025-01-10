@@ -18,6 +18,7 @@ public class TaskManager {
         // Leer el archivo y convertir el contenido a una lista de tareas utilizando el metodo fromJson
         try {
             String json = Files.readString(PATH_FILE);
+            // Dividir el contenido del archivo obviando los corchetes iniciales y finales y separando cada tarea por },
             String[] parts = json.substring(1, json.length() - 1).split("},");
             ArrayList<Task> tasks = new ArrayList<>();
             for (String part : parts) {
@@ -27,6 +28,23 @@ public class TaskManager {
         } catch (Exception e) {
             System.out.println("An error occurred while loading the tasks");
             return new ArrayList<>();
+        }
+    }
+
+    public void saveTasks() {
+        // Convertir la lista de tareas a un formato JSON
+        StringBuilder json = new StringBuilder("[");
+        for (Task task : tasks) {
+            json.append(task.toJson());
+            json.append(",");
+        }
+        json.deleteCharAt(json.length() - 1);
+        json.append("]");
+        // Guardar el contenido en el archivo
+        try {
+            Files.writeString(PATH_FILE, json);
+        } catch (Exception e) {
+            System.out.println("An error occurred while saving the tasks");
         }
     }
 
