@@ -16,12 +16,32 @@ public class Task {
         this.updateDate = LocalDate.now();
     }
 
-    public Task(String description, TaskStatus status) {
-        this.ID = IDCounter++;
+    public Task(int ID, String description, TaskStatus status, LocalDate creationDate, LocalDate updateDate) {
+        this.ID = ID;
         this.description = description;
-        this.status = status    ;
-        this.creationDate = LocalDate.now();
-        this.updateDate = LocalDate.now();
+        this.status = status;
+        this.creationDate = creationDate;
+        this.updateDate = updateDate;
+    }
+
+    public String toJson() {
+        return "{" +
+                "\"ID\":" + ID +
+                ", \"description\":\"" + description + '\"' +
+                ", \"status\":\"" + status + '\"' +
+                ", \"creationDate\":\"" + creationDate + '\"' +
+                ", \"updateDate\":\"" + updateDate + '\"' +
+                '}';
+    }
+
+    public static Task fromJson(String json) {
+        String[] parts = json.split(",");
+        int ID = Integer.parseInt(parts[0].split(":")[1]);
+        String description = parts[1].split(":")[1];
+        TaskStatus status = TaskStatus.valueOf(parts[2].split(":")[1]);
+        LocalDate creationDate = LocalDate.parse(parts[3].split(":")[1]);
+        LocalDate updateDate = LocalDate.parse(parts[4].split(":")[1]);
+        return new Task(ID, description, status, creationDate, updateDate);
     }
 
     public int getID() {

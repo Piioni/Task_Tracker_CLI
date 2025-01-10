@@ -1,17 +1,36 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class TaskManager {
-    private final String PATH = "tasks.json";
-    private ArrayList<Task> tasks;
+    private final Path PATH_FILE = Path.of("tasks.json");
+    private final ArrayList<Task> tasks;
 
     public TaskManager() {
         tasks = loadTasks();
     }
 
     private ArrayList<Task> loadTasks() {
-        return new ArrayList<>();
+        // Verificar si el archivo existe
+        if (!Files.exists(PATH_FILE)){
+            return new ArrayList<>();
+        }
+        // Leer el archivo y convertir el contenido a una lista de tareas utilizando el metodo fromJson
+        try {
+            String json = Files.readString(PATH_FILE);
+            String[] parts = json.substring(1, json.length() - 1).split("},");
+            ArrayList<Task> tasks = new ArrayList<>();
+            for (String part : parts) {
+                tasks.add(Task.fromJson(part + "}"));
+            }
+            return tasks;
+        } catch (Exception e) {
+            System.out.println("An error occurred while loading the tasks");
+            return new ArrayList<>();
+        }
     }
 
+    // crea una tarea y la agrega a la lista de tareas
     public void addTask(String description) {
         Task task = new Task(description);
         tasks.add(task);
@@ -21,6 +40,7 @@ public class TaskManager {
     public void updateTask(int id, String description) {
         Task task = findTaskById(id);
         if (task != null) {
+            // Actualizar la descripción de la tarea
             task.setDescription(description);
             task.setUpdateDate();
             System.out.println("Task updated successfully");
@@ -32,6 +52,7 @@ public class TaskManager {
     public void markTaskAsDone(int id) {
         Task task = findTaskById(id);
         if (task != null) {
+            // Actualizar el estado de la tarea a DONE
             task.setStatus(TaskStatus.DONE);
             task.setUpdateDate();
             System.out.println("Task marked as done successfully");
@@ -43,6 +64,7 @@ public class TaskManager {
     public void markTaskAsProgress(int id) {
         Task task = findTaskById(id);
         if (task != null) {
+            // Actualizar el estado de la tarea a IN_PROGRESS
             task.setStatus(TaskStatus.IN_PROGRESS);
             task.setUpdateDate();
             System.out.println("Task marked as IN_Progress successfully");
@@ -95,7 +117,7 @@ public class TaskManager {
 
     // para buscar una tarea por su id
     public Task findTaskById(int id) {
-        // Recorrer la lista de tareas y devolver la tarea con el id proporcionado
+        // Recorrer la lista de tareas y devolver la tarea con el id proporcionando
         for (Task task : tasks) {
             if (task.getID() == id) {
                 return task;
