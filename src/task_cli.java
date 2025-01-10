@@ -27,6 +27,7 @@ public class task_cli {
                     }
                     String description = db.toString().trim();
                     taskManager.addTask(description);
+                    taskManager.saveTasks();
 
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Description is required");
@@ -54,6 +55,7 @@ public class task_cli {
                     }
                     String description = db.toString().trim();
                     taskManager.updateTask(id, description);
+                    taskManager.saveTasks();
 
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("ID and description are required");
@@ -76,6 +78,8 @@ public class task_cli {
                 try {
                     int id = Integer.parseInt(args[1]);
                     taskManager.markTaskAsProgress(id);
+                    taskManager.saveTasks();
+
                 } catch (NumberFormatException e) {
                     System.out.println("ID must be a number");
                 }
@@ -91,6 +95,8 @@ public class task_cli {
                 try {
                     int id = Integer.parseInt(args[1]);
                     taskManager.markTaskAsDone(id);
+                    taskManager.saveTasks();
+
                 } catch (NumberFormatException e) {
                     System.out.println("ID must be a number");
                 }
@@ -106,6 +112,8 @@ public class task_cli {
                 try {
                     int id = Integer.parseInt(args[1]);
                     taskManager.deleteTask(id);
+                    taskManager.saveTasks();
+
                 } catch (NumberFormatException e) {
                     System.out.println("ID must be a number");
                 }
