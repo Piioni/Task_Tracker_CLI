@@ -14,120 +14,149 @@ public class task_cli {
         String command = args[0].toLowerCase();
         switch (command) {
             case "add":
-                try{
-                    if (args.length == 3) {
-                        System.out.println("Add command");
-                        taskManager.addTask(args[1], TaskStatus.valueOf(args[2].toUpperCase()));
-                        return;
-                    }else if (args.length == 2){
-                        System.out.println("Add command");
-                        taskManager.addTask(args[1]);
+                try {
+                    // Comprobar si se ha pasado una descripción
+                    if (notEnoughArguments(args)) {
                         return;
                     }
-                    if (args.length < 2) {
-                        System.out.println("Description is required");
-                        showUsage();
-                        return;
-                    }
+                    // Obtener la descripción de los argumentos
                     StringBuilder db = new StringBuilder();
                     for (int i = 1; i < args.length; i++) {
                         db.append(args[i]);
                         db.append(" ");
                     }
                     String description = db.toString().trim();
-                } catch (ArrayIndexOutOfBoundsException e){
+                    taskManager.addTask(description);
+
+                } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Description is required");
                     showUsage();
-                } catch (Exception e){
+                } catch (Exception e) {
                     System.out.println("An error occurred");
                     showUsage();
                 }
-                System.out.println("Task added successfully, description: " + args[1]);
                 break;
 
+            // Caso para actualizar una tarea
             case "update":
                 try {
-                    if (args.length == 4) {
-                        System.out.println("Update command");
-                        if (TaskStatus.contains(args[3].toUpperCase())) {
-                            taskManager.updateTask(Integer.parseInt(args[1]), args[2], TaskStatus.valueOf(args[3].toUpperCase()));
-                            return;
-                        }else {
-                            System.out.println("Invalid status");
-                            showUsage();
-                            return;
-                        }
-                    } else if (args.length == 3) {
-                        if (TaskStatus.contains(args[2].toUpperCase())) {
-                            System.out.println("Update command");
-                            taskManager.updateTask(Integer.parseInt(args[1]), TaskStatus.valueOf(args[2].toUpperCase()));
-                            return;
-                        }else {
-                            System.out.println("Update command");
-                            taskManager.updateTask(Integer.parseInt(args[1]), args[2]);
-                            return;
-                        }
-                    }
-                    if (args.length < 3) {
-                        System.out.println("ID and description or status are required");
-                        showUsage();
+                    if (notEnoughArguments(args)) {
                         return;
                     }
+                    // Obtener el ID de la task
+                    int id = Integer.parseInt(args[1]);
+
+                    // Obtener la descripción de los argumentos
                     StringBuilder db = new StringBuilder();
                     for (int i = 2; i < args.length; i++) {
                         db.append(args[i]);
                         db.append(" ");
                     }
                     String description = db.toString().trim();
-                } catch (ArrayIndexOutOfBoundsException e){
+                    taskManager.updateTask(id, description);
+
+                } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("ID and description are required");
                     showUsage();
-                } catch (Exception e){
+                } catch (NumberFormatException e) {
+                    System.out.println("ID must be a number");
+                } catch (Exception e) {
                     System.out.println("An error occurred");
                     showUsage();
                 }
                 break;
-            case "delete":
-                if (args.length < 2) {
-                    System.out.println("ID is required");
-                    showUsage();
+
+            // Caso para marcar una tarea como en progreso
+            case "mark-in-progress":
+                if (notEnoughArguments(args)) {
                     return;
-                } else {
-                    System.out.println("Delete command");
-                    taskManager.deleteTask(Integer.parseInt(args[1]));
+                }
+
+                // Obtener el ID de la tarea y marcarla como en progreso
+                try {
+                    int id = Integer.parseInt(args[1]);
+                    taskManager.markTaskAsProgress(id);
+                } catch (NumberFormatException e) {
+                    System.out.println("ID must be a number");
                 }
                 break;
+
+            // Caso para marcar una tarea como hecha
+            case "mark-done":
+                if (notEnoughArguments(args)) {
+                    return;
+                }
+
+                // Obtener el ID de la tarea y marcarla como hecha
+                try {
+                    int id = Integer.parseInt(args[1]);
+                    taskManager.markTaskAsDone(id);
+                } catch (NumberFormatException e) {
+                    System.out.println("ID must be a number");
+                }
+                break;
+
+            // Caso para eliminar una tarea
+            case "delete":
+                if (notEnoughArguments(args)) {
+                    return;
+                }
+
+                // Obtener el ID de la tarea y eliminarla
+                try {
+                    int id = Integer.parseInt(args[1]);
+                    taskManager.deleteTask(id);
+                } catch (NumberFormatException e) {
+                    System.out.println("ID must be a number");
+                }
+                break;
+
+            // Caso para listar todas las tareas
             case "list":
-                System.out.println("List command");
+                // Caso para listar todas las tareas
                 if (args.length == 1) {
                     taskManager.listTasks();
-                } else if (args.length == 2) {
+                }
+                // Caso para listar todas las tareas con un estado específico
+                else if (args.length == 2) {
                     taskManager.listTasks(TaskStatus.valueOf(args[1].toUpperCase()));
                 } else {
                     System.out.println("Invalid command");
                     showUsage();
                 }
-
                 break;
+
+            // Comando help
             case "help":
                 showUsage();
                 break;
+
+            // Comando no válido
             default:
                 System.out.println("Invalid command");
                 showUsage();
                 break;
         }
-
-
-
     }
 
-    public static void showUsage(){
+    // Comprueba si se han pasado suficientes argumentos
+    public static boolean notEnoughArguments(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Description is required");
+            showUsage();
+            return true;
+        }
+        return false;
+    }
+
+    public static void showUsage() {
         System.out.println("Usage: java task_cli <command> <options>");
         System.out.println("Commands:");
         System.out.println("add <description> - Add a new task");
         System.out.println("update <id> <description> - Update a task");
         System.out.println("delete <id> - Delete a task");
+        System.out.println("mark-in-progress <id> - Mark a task as in progress");
+        System.out.println("mark-done <id> - Mark a task as done");
         System.out.println("list - List all tasks");
         System.out.println("list <status> - List all tasks with the given status");
         System.out.println("help - Show the usage");

@@ -117,6 +117,12 @@ public class TaskManager {
     }
 
     public void listTasks(TaskStatus status) {
+        // Verificar si el estado proporcionado es válido
+        if (!TaskStatus.contains(status.getStatus())) {
+            System.out.println("Invalid status");
+            return;
+        }
+
         System.out.println("Tasks with status " + status.getStatus());
         // Imprimir el encabezado de la tabla
         System.out.printf("%-8s | %-40s | %-15s | %-15s\n", "ID", "Description",  "Creation Date", "Update Date");
@@ -134,7 +140,7 @@ public class TaskManager {
     }
 
     // para buscar una tarea por su id
-    public Task findTaskById(int id) {
+    private Task findTaskById(int id) {
         // Recorrer la lista de tareas y devolver la tarea con el id proporcionando
         for (Task task : tasks) {
             if (task.getID() == id) {
