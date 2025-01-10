@@ -48,10 +48,6 @@ public class Task {
         return ID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -72,10 +68,6 @@ public class Task {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public LocalDate getUpdateDate() {
         return updateDate;
     }
@@ -91,7 +83,6 @@ public class Task {
     public static void setIDCounter(int IDCounter) {
         Task.IDCounter = IDCounter;
     }
-
 
     @Override
     public String toString() {
