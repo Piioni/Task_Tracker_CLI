@@ -1,10 +1,10 @@
 import java.time.LocalDate;
 
 public class Task {
-    private int ID;
+    private final int ID;
     private String description;
     private TaskStatus status;
-    private LocalDate creationDate;
+    private final LocalDate creationDate;
     private LocalDate updateDate;
     private static int IDCounter = 1;
 
