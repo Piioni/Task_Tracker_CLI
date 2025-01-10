@@ -28,16 +28,50 @@ public class Task {
         return ID;
     }
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStatus() {
+        return status.getStatus();
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDate getUpdateDate() {
+        return updateDate;
     }
 
     public void setUpdateDate() {
         this.updateDate = LocalDate.now();
     }
 
-    public void setStatus(TaskStatus status) {
-        this.status = status;
+    public static int getIDCounter() {
+        return IDCounter;
     }
+
+    public static void setIDCounter(int IDCounter) {
+        Task.IDCounter = IDCounter;
+    }
+
 
     @Override
     public String toString() {
@@ -46,13 +80,5 @@ public class Task {
                 ", status=" + status +
                 ", creationDate=" + creationDate +
                 ", updateDate=" + updateDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
     }
 }

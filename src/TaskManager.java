@@ -18,45 +18,35 @@ public class TaskManager {
         System.out.println("Task added successfully");
     }
 
-    public void addTask(String description, TaskStatus status) {
-        Task task = new Task(description, status);
-        tasks.add(task);
-        System.out.println("Task added successfully");
-    }
-
     public void updateTask(int id, String description) {
         Task task = findTaskById(id);
         if (task != null) {
             task.setDescription(description);
             task.setUpdateDate();
-            tasks.set(tasks.indexOf(task), task);
             System.out.println("Task updated successfully");
-        }else{
+        } else {
             System.out.println("Task not found");
         }
     }
 
-    public void updateTask(int id, TaskStatus status) {
+    public void markTaskAsDone(int id) {
         Task task = findTaskById(id);
         if (task != null) {
-            task.setStatus(status);
+            task.setStatus(TaskStatus.DONE);
             task.setUpdateDate();
-            tasks.set(tasks.indexOf(task), task);
-            System.out.println("Task updated successfully");
-        }else{
+            System.out.println("Task marked as done successfully");
+        } else {
             System.out.println("Task not found");
         }
     }
 
-    public void updateTask(int id, String description, TaskStatus status) {
+    public void markTaskAsProgress(int id) {
         Task task = findTaskById(id);
         if (task != null) {
-            task.setDescription(description);
-            task.setStatus(status);
+            task.setStatus(TaskStatus.IN_PROGRESS);
             task.setUpdateDate();
-            tasks.set(tasks.indexOf(task), task);
-            System.out.println("Task updated successfully");
-        }else{
+            System.out.println("Task marked as IN_Progress successfully");
+        } else {
             System.out.println("Task not found");
         }
     }
@@ -64,14 +54,48 @@ public class TaskManager {
     public void deleteTask(int id) {
         Task task = findTaskById(id);
         if (task != null) {
+            // para eliminar una tarea del ArrayList
             tasks.remove(task);
             System.out.println("Task deleted successfully");
-        }else{
+        } else {
             System.out.println("Task not found");
         }
     }
 
+    public void listTasks() {
+        // Imprimir el encabezado de la tabla
+        System.out.println("All tasks");
+        System.out.printf("%-8s | %-40s | %-15s | %-15s | %-15s\n", "ID", "Description", "Status", "Creation Date", "Update Date");
+        for (Task task : tasks) {
+            System.out.printf("%-8d | %-40s | %-15s | %-15s | %-15s\n",
+                    task.getID(),
+                    task.getDescription(),
+                    task.getStatus(),
+                    task.getCreationDate(),
+                    task.getUpdateDate());
+        }
+    }
+
+    public void listTasks(TaskStatus status) {
+        System.out.println("Tasks with status " + status.getStatus());
+        // Imprimir el encabezado de la tabla
+        System.out.printf("%-8s | %-40s | %-15s | %-15s\n", "ID", "Description",  "Creation Date", "Update Date");
+        // Recorrer la lista de tareas y mostrar solo las tareas con el estado proporcionado
+        for (Task task : tasks) {
+            if (task.getStatus().equals(status.getStatus())) {
+                System.out.printf("%-8d | %-40s | %-15s | %-15s\n",
+                        task.getID(),
+                        task.getDescription(),
+                        task.getCreationDate(),
+                        task.getUpdateDate());
+
+            }
+        }
+    }
+
+    // para buscar una tarea por su id
     public Task findTaskById(int id) {
+        // Recorrer la lista de tareas y devolver la tarea con el id proporcionado
         for (Task task : tasks) {
             if (task.getID() == id) {
                 return task;
@@ -79,21 +103,5 @@ public class TaskManager {
         }
         return null;
     }
-
-    public void listTasks() {
-        for (Task task : tasks) {
-            System.out.println(task.getDescription());
-        }
-    }
-
-    public void listTasks(TaskStatus status) {
-        for (Task task : tasks) {
-            if (task.getStatus() == status) {
-                System.out.println(task.getDescription());
-                System.out.println(task.getDescription());
-            }
-        }
-    }
-
 
 }
