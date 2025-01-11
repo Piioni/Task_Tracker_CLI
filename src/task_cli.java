@@ -139,6 +139,11 @@ public class task_cli {
                 showUsage();
                 break;
 
+            // Comando de salida
+            case "exit":
+                System.out.println("Goodbye!");
+                break;
+
             // Comando no válido
             default:
                 System.out.println("Invalid command");
